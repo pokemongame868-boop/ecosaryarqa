@@ -52,11 +52,13 @@ export interface BlogPost {
   category: string;
 }
 
+const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+
 // Local tourism images
 export const heroImages: string[] = [
-  '/images/karkaraly-national-park.jpg',
-  '/images/bektau-ata.jpg',
-  '/images/kazakhstan-steppe-horses.jpg',
+  asset('images/karkaraly-national-park.jpg'),
+  asset('images/bektau-ata.jpg'),
+  asset('images/kazakhstan-steppe-horses.jpg'),
 ];
 
 export const categories: Category[] = [
@@ -101,7 +103,7 @@ export const destinations: Destination[] = [
     bestSeason: 'Мамыр – Қыркүйек',
     difficulty: 'Орташа',
     duration: '2–4 күн',
-    imageUrl: '/images/karkaraly-national-park.jpg',
+    imageUrl: asset('images/karkaraly-national-park.jpg'),
     imageGradient: 'linear-gradient(135deg, #2d5016 0%, #5a8a2f 50%, #8fb052 100%)',
   },
   {
@@ -112,7 +114,7 @@ export const destinations: Destination[] = [
     bestSeason: 'Сәуір – Қазан',
     difficulty: 'Орташа',
     duration: '2–3 күн',
-    imageUrl: '/images/bektau-ata.jpg',
+    imageUrl: asset('images/bektau-ata.jpg'),
     imageGradient: 'linear-gradient(135deg, #6b4423 0%, #a0673a 50%, #c4915c 100%)',
   },
   {
@@ -123,7 +125,7 @@ export const destinations: Destination[] = [
     bestSeason: 'Маусым – Тамыз',
     difficulty: 'Жеңіл',
     duration: '2–3 күн',
-    imageUrl: '/images/kazakhstan-lake.jpg',
+    imageUrl: asset('images/kazakhstan-lake.jpg'),
     imageGradient: 'linear-gradient(135deg, #1a4a6e 0%, #2e7db5 50%, #5ab3d4 100%)',
   },
   {
@@ -134,7 +136,7 @@ export const destinations: Destination[] = [
     bestSeason: 'Мамыр – Қыркүйек',
     difficulty: 'Жеңіл/Орташа',
     duration: '1–3 күн',
-    imageUrl: '/images/kazakhstan-mountain-valley.jpg',
+    imageUrl: asset('images/kazakhstan-mountain-valley.jpg'),
     imageGradient: 'linear-gradient(135deg, #3a6b2a 0%, #7ab542 50%, #b5d46b 100%)',
   },
   {
@@ -145,7 +147,7 @@ export const destinations: Destination[] = [
     bestSeason: 'Мамыр – Қазан',
     difficulty: 'Орташа',
     duration: '2–4 күн',
-    imageUrl: '/images/kazakhstan-mountain-valley.jpg',
+    imageUrl: asset('images/kazakhstan-mountain-valley.jpg'),
     imageGradient: 'linear-gradient(135deg, #5a4a1a 0%, #9a7e3a 50%, #c4a852 100%)',
   },
   {
@@ -156,7 +158,7 @@ export const destinations: Destination[] = [
     bestSeason: 'Маусым – Тамыз',
     difficulty: 'Жеңіл',
     duration: '1–2 күн',
-    imageUrl: '/images/kazakhstan-lake.jpg',
+    imageUrl: asset('images/kazakhstan-lake.jpg'),
     imageGradient: 'linear-gradient(135deg, #1e4a5a 0%, #3a8a9a 50%, #6ab5c4 100%)',
   },
 ];
@@ -232,28 +234,28 @@ export const galleryItems: GalleryItem[] = [
   {
     id: 'g3',
     caption: 'Балқаш көлі',
-    imageUrl: '/images/kazakhstan-lake.jpg',
+    imageUrl: asset('images/kazakhstan-lake.jpg'),
     gradient: 'linear-gradient(135deg, #1a4a6e 0%, #5ab3d4 100%)',
     span: 'normal',
   },
   {
     id: 'g4',
     caption: 'Дала маршруты',
-    imageUrl: '/images/kazakhstan-steppe-horses.jpg',
+    imageUrl: asset('images/kazakhstan-steppe-horses.jpg'),
     gradient: 'linear-gradient(135deg, #3a6b2a 0%, #b5d46b 100%)',
     span: 'normal',
   },
   {
     id: 'g5',
     caption: 'Кемпинг',
-    imageUrl: '/images/kazakh-horse-steppe.jpg',
+    imageUrl: asset('images/kazakh-horse-steppe.jpg'),
     gradient: 'linear-gradient(135deg, #2c3e50 0%, #596a7a 100%)',
     span: 'normal',
   },
   {
     id: 'g6',
     caption: 'Сакралды орындар',
-    imageUrl: '/images/kazakhstan-mountain-valley.jpg',
+    imageUrl: asset('images/kazakhstan-mountain-valley.jpg'),
     gradient: 'linear-gradient(135deg, #5a4a1a 0%, #c4a852 100%)',
     span: 'normal',
   },
