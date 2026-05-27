@@ -44,18 +44,7 @@ export default function BookingForm() {
     const currentForm = e.currentTarget as HTMLFormElement;
     if (!currentForm.reportValidity()) return;
 
-    const whatsappNumber = contactInfo.whatsapp.replace(/\D/g, '');
-    const text = [
-      'Сәлеметсіз бе! EcoSaryArqa сайты арқылы турға өтінім:',
-      `Аты-жөні: ${form.name}`,
-      `Телефон: ${form.phone}`,
-      form.email ? `Email: ${form.email}` : null,
-      `Тур түрі: ${form.tourType}`,
-      form.days ? `Күн саны: ${form.days}` : null,
-      form.message ? `Хабарлама: ${form.message}` : null,
-    ].filter(Boolean).join('\n');
-
-    window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+    // No backend — just show success state
     setSubmitted(true);
     setForm(initialForm);
     setTimeout(() => setSubmitted(false), 6000);
@@ -215,7 +204,7 @@ export default function BookingForm() {
                 {submitted && (
                   <div className="form-success" role="alert">
                     <CheckCircle size={20} />
-                    <span>WhatsApp ашылды. Хабарламаны тексеріп, жіберіңіз.</span>
+                    <span>Өтінім қабылданды! Жақын арада хабарласамыз.</span>
                   </div>
                 )}
               </div>

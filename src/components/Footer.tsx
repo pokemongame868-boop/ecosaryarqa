@@ -24,6 +24,34 @@ export default function Footer() {
             <p className="footer-slogan">
               Табиғатты сақтай отырып саяхаттаңыз.
             </p>
+
+            {/* Social links */}
+            <div className="footer-socials">
+              <a
+                href="#"
+                className="footer-social-link"
+                aria-label="WhatsApp"
+                onClick={(e) => e.preventDefault()}
+              >
+                <MessageCircle size={16} />
+              </a>
+              <a
+                href="#"
+                className="footer-social-link"
+                aria-label="Instagram"
+                onClick={(e) => e.preventDefault()}
+              >
+                <Instagram size={16} />
+              </a>
+              <a
+                href="#"
+                className="footer-social-link"
+                aria-label="Telegram"
+                onClick={(e) => e.preventDefault()}
+              >
+                <Send size={16} />
+              </a>
+            </div>
           </div>
 
           {/* Navigation */}

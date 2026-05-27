@@ -1,4 +1,4 @@
-import { Clock } from 'lucide-react';
+import { Clock, ArrowRight } from 'lucide-react';
 import { blogPosts } from '../data/tourismData';
 
 export default function Blog() {
@@ -27,7 +27,10 @@ export default function Blog() {
                   <Clock size={14} />
                   {post.readTime} оқу
                 </span>
-                <span className="blog-card-link">Оқу</span>
+                <a href="#" className="blog-card-link" onClick={(e) => e.preventDefault()}>
+                  Оқу
+                  <ArrowRight size={14} />
+                </a>
               </div>
             </article>
           ))}
