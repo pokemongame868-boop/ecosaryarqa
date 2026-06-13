@@ -43,8 +43,6 @@ export default function Header() {
 
   return (
     <header className={`header${scrolled ? ' scrolled' : ''}`}>
-      {languageSwitcher('floating-language-switcher')}
-
       <div className="header-inner">
         <a href="#home" className="logo" onClick={(e) => { e.preventDefault(); handleNavClick('#home'); }}>
           <div className="logo-icon">

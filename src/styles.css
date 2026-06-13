@@ -319,14 +319,6 @@ section {
   margin-bottom: 12px;
 }
 
-.floating-language-switcher {
-  position: fixed;
-  top: 18px;
-  right: 172px;
-  z-index: 220;
-  background: var(--color-white);
-}
-
 /* Mobile menu button */
 .menu-btn {
   display: none;
@@ -1547,10 +1539,6 @@ section {
     display: none;
   }
 
-  .floating-language-switcher {
-    right: 76px;
-  }
-
   .menu-btn {
     display: flex;
   }
@@ -1648,11 +1636,6 @@ section {
 @media (max-width: 480px) {
   :root {
     --section-padding: 56px 0;
-  }
-
-  .floating-language-switcher {
-    top: 16px;
-    right: 70px;
   }
 
   .categories-grid {
