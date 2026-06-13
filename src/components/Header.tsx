@@ -20,8 +20,8 @@ export default function Header() {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const languageSwitcher = (
-    <div className="language-switcher" aria-label="Language switcher">
+  const languageSwitcher = (className = '') => (
+    <div className={`language-switcher${className ? ` ${className}` : ''}`} aria-label="Language switcher">
       <button
         type="button"
         className={`language-option${language === 'ru' ? ' active' : ''}`}
@@ -43,6 +43,8 @@ export default function Header() {
 
   return (
     <header className={`header${scrolled ? ' scrolled' : ''}`}>
+      {languageSwitcher('floating-language-switcher')}
+
       <div className="header-inner">
         <a href="#home" className="logo" onClick={(e) => { e.preventDefault(); handleNavClick('#home'); }}>
           <div className="logo-icon">
@@ -67,7 +69,7 @@ export default function Header() {
         </nav>
 
         <div className="header-actions">
-          {languageSwitcher}
+          {languageSwitcher()}
 
           <a
             href="#contact"
@@ -100,7 +102,7 @@ export default function Header() {
           </a>
         ))}
         <div className="mobile-nav-btn">
-          <div className="mobile-language-switcher">{languageSwitcher}</div>
+          <div className="mobile-language-switcher">{languageSwitcher()}</div>
           <a
             href="#contact"
             className="btn-primary"
