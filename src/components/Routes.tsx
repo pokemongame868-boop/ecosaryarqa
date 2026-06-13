@@ -1,55 +1,52 @@
 import { useState } from 'react';
-import { MapPin, Clock, Package, ArrowRight } from 'lucide-react';
-import { routes } from '../data/tourismData';
-import type { Route } from '../data/tourismData';
+import { ArrowRight, Clock, MapPin, Package } from 'lucide-react';
+import type { Route, SiteCopy } from '../data/tourismData';
+import { useI18n } from '../i18n';
 
-// Filter config
-const durationOptions = ['Барлығы', '1-2 күн', '2-3 күн', '3 күн'] as const;
-const activityOptions = ['Барлығы', 'жаяу поход', 'атпен серуен', 'кемпинг', 'road trip', 'фото'] as const;
-const difficultyOptions = ['Барлығы', 'жеңіл', 'орташа', 'жеңіл/орташа'] as const;
+type DurationFilter = 'all' | '1-2' | '2-3' | '3';
+type DifficultyFilter = 'all' | 'easy' | 'medium' | 'easy-medium';
 
-type DurationFilter = typeof durationOptions[number];
-type ActivityFilter = typeof activityOptions[number];
-type DifficultyFilter = typeof difficultyOptions[number];
-
-function RouteCard({ route }: { route: Route }) {
+function RouteCard({
+  route,
+  labels,
+}: {
+  route: Route;
+  labels: SiteCopy['routes']['labels'];
+}) {
   return (
     <article className="route-card">
       <div className="route-header">
         <h3 className="route-title">{route.title}</h3>
-        <span className={`route-difficulty ${route.difficulty}`}>{route.difficulty}</span>
+        <span className={`route-difficulty ${route.difficultyId}`}>{route.difficulty}</span>
       </div>
 
-      {/* Info grid */}
       <div className="route-info">
         <div className="route-info-item">
           <span className="route-info-label">
             <Clock size={11} style={{ display: 'inline', marginRight: 4 }} />
-            Ұзақтығы
+            {labels.duration}
           </span>
           <span className="route-info-value">{route.duration}</span>
         </div>
         <div className="route-info-item">
           <span className="route-info-label">
             <MapPin size={11} style={{ display: 'inline', marginRight: 4 }} />
-            Старт
+            {labels.start}
           </span>
           <span className="route-info-value">{route.start}</span>
         </div>
       </div>
 
-      {/* Activities */}
       <div className="route-activities">
         {route.activities.map((act) => (
           <span key={act} className="route-activity-tag">{act}</span>
         ))}
       </div>
 
-      {/* Packing */}
       <div className="route-packing">
         <p className="route-packing-title">
           <Package size={11} style={{ display: 'inline', marginRight: 4 }} />
-          Алу керек
+          {labels.packing}
         </p>
         <div className="route-packing-list">
           {route.packing.map((item) => (
@@ -64,7 +61,7 @@ function RouteCard({ route }: { route: Route }) {
           document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
         }}
       >
-        Брондау
+        {labels.book}
         <ArrowRight size={15} />
       </button>
     </article>
@@ -72,17 +69,16 @@ function RouteCard({ route }: { route: Route }) {
 }
 
 export default function Routes() {
-  const [duration, setDuration] = useState<DurationFilter>('Барлығы');
-  const [activity, setActivity] = useState<ActivityFilter>('Барлығы');
-  const [difficulty, setDifficulty] = useState<DifficultyFilter>('Барлығы');
+  const { content } = useI18n();
+  const { routes } = content;
+  const [duration, setDuration] = useState<DurationFilter>('all');
+  const [activity, setActivity] = useState('all');
+  const [difficulty, setDifficulty] = useState<DifficultyFilter>('all');
 
-  // Filter logic
-  const filtered = routes.filter((r: Route) => {
-    const matchDuration = duration === 'Барлығы' || r.durationCategory === duration;
-    const matchActivity =
-      activity === 'Барлығы' ||
-      r.activities.some((a) => a.toLowerCase().includes(activity.toLowerCase()));
-    const matchDifficulty = difficulty === 'Барлығы' || r.difficulty === difficulty;
+  const filtered = routes.items.filter((route: Route) => {
+    const matchDuration = duration === 'all' || route.durationCategory === duration;
+    const matchActivity = activity === 'all' || route.activityIds.includes(activity);
+    const matchDifficulty = difficulty === 'all' || route.difficultyId === difficulty;
     return matchDuration && matchActivity && matchDifficulty;
   });
 
@@ -90,72 +86,63 @@ export default function Routes() {
     <section id="routes" className="routes">
       <div className="container">
         <header className="section-header">
-          <span className="section-tag">Маршруттар</span>
-          <h2 className="section-title">Дайын маршруттар</h2>
-          <p className="section-subtitle">
-            Ұзақтығы мен белсенділік түріне қарай маршрутты сүзгілеңіз.
-          </p>
+          <span className="section-tag">{routes.tag}</span>
+          <h2 className="section-title">{routes.title}</h2>
+          <p className="section-subtitle">{routes.subtitle}</p>
         </header>
 
-        {/* Filters */}
-        <div className="routes-filters" role="group" aria-label="Маршрут сүзгілері">
-          {/* Duration */}
+        <div className="routes-filters" role="group" aria-label={routes.filtersLabel}>
           <div className="filter-group">
-            <span className="filter-label">Ұзақтығы</span>
+            <span className="filter-label">{routes.durationLabel}</span>
             <div className="filter-options">
-              {durationOptions.map((opt) => (
+              {routes.durationOptions.map((opt) => (
                 <button
-                  key={opt}
-                  className={`filter-btn${duration === opt ? ' active' : ''}`}
-                  onClick={() => setDuration(opt)}
+                  key={opt.id}
+                  className={`filter-btn${duration === opt.id ? ' active' : ''}`}
+                  onClick={() => setDuration(opt.id)}
                 >
-                  {opt}
+                  {opt.label}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Activity */}
           <div className="filter-group">
-            <span className="filter-label">Белсенділік</span>
+            <span className="filter-label">{routes.activityLabel}</span>
             <div className="filter-options">
-              {activityOptions.map((opt) => (
+              {routes.activityOptions.map((opt) => (
                 <button
-                  key={opt}
-                  className={`filter-btn${activity === opt ? ' active' : ''}`}
-                  onClick={() => setActivity(opt)}
+                  key={opt.id}
+                  className={`filter-btn${activity === opt.id ? ' active' : ''}`}
+                  onClick={() => setActivity(opt.id)}
                 >
-                  {opt}
+                  {opt.label}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Difficulty */}
           <div className="filter-group">
-            <span className="filter-label">Қиындық</span>
+            <span className="filter-label">{routes.difficultyLabel}</span>
             <div className="filter-options">
-              {difficultyOptions.map((opt) => (
+              {routes.difficultyOptions.map((opt) => (
                 <button
-                  key={opt}
-                  className={`filter-btn${difficulty === opt ? ' active' : ''}`}
-                  onClick={() => setDifficulty(opt)}
+                  key={opt.id}
+                  className={`filter-btn${difficulty === opt.id ? ' active' : ''}`}
+                  onClick={() => setDifficulty(opt.id)}
                 >
-                  {opt}
+                  {opt.label}
                 </button>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Route cards */}
         <div className="routes-grid">
           {filtered.length > 0 ? (
-            filtered.map((route) => <RouteCard key={route.id} route={route} />)
+            filtered.map((route) => <RouteCard key={route.id} route={route} labels={routes.labels} />)
           ) : (
-            <p className="routes-empty">
-              Таңдалған сүзгілерге сәйкес маршрут табылмады. Басқа параметрлерді таңдаңыз.
-            </p>
+            <p className="routes-empty">{routes.labels.empty}</p>
           )}
         </div>
       </div>

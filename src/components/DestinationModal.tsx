@@ -1,9 +1,9 @@
-import { useEffect, useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import {
-  X, Calendar, Clock, Activity, MapPin,
-  CheckCircle2, Lightbulb, Route, ArrowRight,
+  Activity, ArrowRight, Calendar, CheckCircle2, Clock, Lightbulb, MapPin, Route, X,
 } from 'lucide-react';
 import type { Destination } from '../data/tourismData';
+import { useI18n } from '../i18n';
 
 interface Props {
   destination: Destination | null;
@@ -11,7 +11,9 @@ interface Props {
 }
 
 export default function DestinationModal({ destination, onClose }: Props) {
-  // Close on Escape
+  const { content } = useI18n();
+  const { modal } = content;
+
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -22,7 +24,6 @@ export default function DestinationModal({ destination, onClose }: Props) {
   useEffect(() => {
     if (!destination) return;
     document.addEventListener('keydown', handleKey);
-    // Prevent body scroll while modal is open
     document.body.style.overflow = 'hidden';
     return () => {
       document.removeEventListener('keydown', handleKey);
@@ -52,7 +53,6 @@ export default function DestinationModal({ destination, onClose }: Props) {
       aria-label={destination.name}
     >
       <div className="modal-panel">
-        {/* Hero image / gradient banner */}
         <div
           className="modal-hero"
           style={{ background: destination.imageGradient }}
@@ -71,54 +71,49 @@ export default function DestinationModal({ destination, onClose }: Props) {
           </div>
         </div>
 
-        {/* Close button */}
-        <button className="modal-close" onClick={onClose} aria-label="Жабу">
+        <button className="modal-close" onClick={onClose} aria-label={modal.close}>
           <X size={20} />
         </button>
 
-        {/* Scrollable body */}
         <div className="modal-body">
-          {/* Quick meta row */}
           <div className="modal-meta-row">
             <div className="modal-meta-item">
               <Calendar size={14} />
               <div>
-                <span className="modal-meta-label">Ең жақсы маусым</span>
+                <span className="modal-meta-label">{modal.bestSeason}</span>
                 <span className="modal-meta-value">{destination.bestSeason}</span>
               </div>
             </div>
             <div className="modal-meta-item">
               <Activity size={14} />
               <div>
-                <span className="modal-meta-label">Қиындық</span>
+                <span className="modal-meta-label">{modal.difficulty}</span>
                 <span className="modal-meta-value">{destination.difficulty}</span>
               </div>
             </div>
             <div className="modal-meta-item">
               <Clock size={14} />
               <div>
-                <span className="modal-meta-label">Ұзақтығы</span>
+                <span className="modal-meta-label">{modal.duration}</span>
                 <span className="modal-meta-value">{destination.duration}</span>
               </div>
             </div>
             <div className="modal-meta-item">
               <MapPin size={14} />
               <div>
-                <span className="modal-meta-label">Тур түрі</span>
+                <span className="modal-meta-label">{modal.tourType}</span>
                 <span className="modal-meta-value">{destination.type}</span>
               </div>
             </div>
           </div>
 
-          {/* Description */}
           <p className="modal-desc">{destination.description}</p>
 
           <div className="modal-sections">
-            {/* Highlights */}
             <section className="modal-section">
               <h3 className="modal-section-title">
                 <CheckCircle2 size={18} />
-                Не қарауға болады
+                {modal.highlights}
               </h3>
               <ul className="modal-list">
                 {destination.detail.highlights.map((h) => (
@@ -130,11 +125,10 @@ export default function DestinationModal({ destination, onClose }: Props) {
               </ul>
             </section>
 
-            {/* Activities */}
             <section className="modal-section">
               <h3 className="modal-section-title">
                 <Activity size={18} />
-                Белсенділіктер
+                {modal.activities}
               </h3>
               <div className="modal-tags">
                 {destination.detail.activities.map((a) => (
@@ -143,15 +137,14 @@ export default function DestinationModal({ destination, onClose }: Props) {
               </div>
             </section>
 
-            {/* Itinerary */}
             <section className="modal-section modal-section--full">
               <h3 className="modal-section-title">
                 <Route size={18} />
-                Шамамен күнтәртіп
+                {modal.itinerary}
               </h3>
               <ol className="modal-itinerary">
                 {destination.detail.itinerary.map((step, i) => (
-                  <li key={i} className="modal-itinerary-item">
+                  <li key={step} className="modal-itinerary-item">
                     <span className="modal-itinerary-num">{i + 1}</span>
                     <span className="modal-itinerary-text">{step}</span>
                   </li>
@@ -159,16 +152,15 @@ export default function DestinationModal({ destination, onClose }: Props) {
               </ol>
             </section>
 
-            {/* Tips */}
             <section className="modal-section modal-section--full">
               <h3 className="modal-section-title">
                 <Lightbulb size={18} />
-                Туристерге кеңес
+                {modal.tips}
               </h3>
               <ul className="modal-tips">
                 {destination.detail.tips.map((tip) => (
                   <li key={tip} className="modal-tip-item">
-                    <span className="modal-tip-icon" aria-hidden="true">→</span>
+                    <span className="modal-tip-icon" aria-hidden="true">-</span>
                     {tip}
                   </li>
                 ))}
@@ -176,14 +168,13 @@ export default function DestinationModal({ destination, onClose }: Props) {
             </section>
           </div>
 
-          {/* CTA */}
           <div className="modal-footer">
             <button className="btn-primary modal-book-btn" onClick={handleBook}>
-              Тур брондау
+              {modal.book}
               <ArrowRight size={17} />
             </button>
             <button className="btn-secondary modal-close-text-btn" onClick={onClose}>
-              Жабу
+              {modal.close}
             </button>
           </div>
         </div>

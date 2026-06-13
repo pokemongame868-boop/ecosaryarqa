@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { MessageCircle, Instagram, Send, MapPin, CheckCircle } from 'lucide-react';
-import { contactInfo } from '../data/tourismData';
+import { CheckCircle, Instagram, MapPin, MessageCircle, Send } from 'lucide-react';
+import { useI18n } from '../i18n';
 
 interface FormData {
   name: string;
@@ -20,21 +20,14 @@ const initialForm: FormData = {
   message: '',
 };
 
-const tourTypes = [
-  'Жаяу поход',
-  'Атпен тур',
-  'Машинамен саяхат',
-  'Палаткамен демалыс',
-  'Сакралды орындар',
-  'Аралас тур',
-];
-
 export default function BookingForm() {
   const [form, setForm] = useState<FormData>(initialForm);
   const [submitted, setSubmitted] = useState(false);
+  const { content } = useI18n();
+  const { booking, contactInfo } = content;
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -44,7 +37,6 @@ export default function BookingForm() {
     const currentForm = e.currentTarget as HTMLFormElement;
     if (!currentForm.reportValidity()) return;
 
-    // No backend — just show success state
     setSubmitted(true);
     setForm(initialForm);
     setTimeout(() => setSubmitted(false), 6000);
@@ -54,15 +46,10 @@ export default function BookingForm() {
     <section id="contact" className="booking">
       <div className="container">
         <div className="booking-inner">
-          {/* Left: info */}
           <div className="booking-info">
-            <span className="section-tag">Байланыс</span>
-            <h2 className="booking-info-title">
-              Саяхатыңызды жоспарлайық
-            </h2>
-            <p className="booking-info-desc">
-              Тур туралы сұрақтарыңыз болса немесе брондағыңыз келсе, бізге хабарласыңыз. 24 сағат ішінде жауап береміз.
-            </p>
+            <span className="section-tag">{booking.tag}</span>
+            <h2 className="booking-info-title">{booking.title}</h2>
+            <p className="booking-info-desc">{booking.description}</p>
 
             <div className="booking-contacts">
               <div className="booking-contact-item">
@@ -100,25 +87,24 @@ export default function BookingForm() {
                   <MapPin size={20} />
                 </div>
                 <div>
-                  <div className="booking-contact-label">Орналасуы</div>
+                  <div className="booking-contact-label">{booking.locationLabel}</div>
                   <div className="booking-contact-value">{contactInfo.location}</div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right: form */}
           <div className="booking-form">
             <form onSubmit={handleSubmit} noValidate>
               <div className="form-grid">
                 <div className="form-group">
-                  <label className="form-label" htmlFor="name">Аты-жөні</label>
+                  <label className="form-label" htmlFor="name">{booking.labels.name}</label>
                   <input
                     id="name"
                     name="name"
                     type="text"
                     className="form-input"
-                    placeholder="Сіздің атыңыз"
+                    placeholder={booking.placeholders.name}
                     value={form.name}
                     onChange={handleChange}
                     required
@@ -126,13 +112,13 @@ export default function BookingForm() {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label" htmlFor="phone">Телефон</label>
+                  <label className="form-label" htmlFor="phone">{booking.labels.phone}</label>
                   <input
                     id="phone"
                     name="phone"
                     type="tel"
                     className="form-input"
-                    placeholder="+7 700 000 00 00"
+                    placeholder={booking.placeholders.phone}
                     value={form.phone}
                     onChange={handleChange}
                     required
@@ -140,20 +126,20 @@ export default function BookingForm() {
                 </div>
 
                 <div className="form-group full">
-                  <label className="form-label" htmlFor="email">Email</label>
+                  <label className="form-label" htmlFor="email">{booking.labels.email}</label>
                   <input
                     id="email"
                     name="email"
                     type="email"
                     className="form-input"
-                    placeholder="example@mail.com"
+                    placeholder={booking.placeholders.email}
                     value={form.email}
                     onChange={handleChange}
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label" htmlFor="tourType">Тур түрі</label>
+                  <label className="form-label" htmlFor="tourType">{booking.labels.tourType}</label>
                   <select
                     id="tourType"
                     name="tourType"
@@ -162,33 +148,33 @@ export default function BookingForm() {
                     onChange={handleChange}
                     required
                   >
-                    <option value="">Таңдаңыз</option>
-                    {tourTypes.map((t) => (
-                      <option key={t} value={t}>{t}</option>
+                    <option value="">{booking.placeholders.tourType}</option>
+                    {booking.tourTypes.map((tourType) => (
+                      <option key={tourType} value={tourType}>{tourType}</option>
                     ))}
                   </select>
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label" htmlFor="days">Күн саны</label>
+                  <label className="form-label" htmlFor="days">{booking.labels.days}</label>
                   <input
                     id="days"
                     name="days"
                     type="text"
                     className="form-input"
-                    placeholder="мысалы: 2-3 күн"
+                    placeholder={booking.placeholders.days}
                     value={form.days}
                     onChange={handleChange}
                   />
                 </div>
 
                 <div className="form-group full">
-                  <label className="form-label" htmlFor="message">Хабарлама</label>
+                  <label className="form-label" htmlFor="message">{booking.labels.message}</label>
                   <textarea
                     id="message"
                     name="message"
                     className="form-textarea"
-                    placeholder="Сұрақтарыңыз, ерекше тілектеріңіз..."
+                    placeholder={booking.placeholders.message}
                     value={form.message}
                     onChange={handleChange}
                   />
@@ -197,14 +183,14 @@ export default function BookingForm() {
 
               <div className="form-submit-area">
                 <button type="submit" className="form-submit">
-                  Өтінім жіберу
+                  {booking.submit}
                   <Send size={17} />
                 </button>
 
                 {submitted && (
                   <div className="form-success" role="alert">
                     <CheckCircle size={20} />
-                    <span>Өтінім қабылданды! Жақын арада хабарласамыз.</span>
+                    <span>{booking.success}</span>
                   </div>
                 )}
               </div>

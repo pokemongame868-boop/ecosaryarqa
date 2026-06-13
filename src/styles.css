@@ -279,6 +279,46 @@ section {
   gap: 12px;
 }
 
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(44, 95, 46, 0.18);
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+}
+
+.header.scrolled .language-switcher {
+  background: var(--color-white);
+}
+
+.language-option {
+  min-width: 38px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: var(--color-navy);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: background-color var(--transition), color var(--transition), box-shadow var(--transition);
+}
+
+.language-option:hover,
+.language-option.active {
+  background: var(--color-forest);
+  color: var(--color-white);
+  box-shadow: 0 4px 14px rgba(44, 95, 46, 0.22);
+}
+
+.mobile-language-switcher {
+  display: none;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
 /* Mobile menu button */
 .menu-btn {
   display: none;
@@ -806,17 +846,17 @@ section {
   flex-shrink: 0;
 }
 
-.route-difficulty.жеңіл {
+.route-difficulty.easy {
   background: rgba(74, 140, 77, 0.12);
   color: var(--color-forest);
 }
 
-.route-difficulty.орташа {
+.route-difficulty.medium {
   background: rgba(196, 163, 90, 0.15);
   color: #7a6020;
 }
 
-.route-difficulty.жеңіл\/орташа {
+.route-difficulty.easy-medium {
   background: rgba(74, 140, 77, 0.08);
   color: #4a6020;
 }
@@ -1495,6 +1535,10 @@ section {
     display: none;
   }
 
+  .header-actions > .language-switcher {
+    display: none;
+  }
+
   .menu-btn {
     display: flex;
   }
@@ -1573,6 +1617,10 @@ section {
     flex-direction: column;
     gap: 8px;
     text-align: center;
+  }
+
+  .mobile-language-switcher {
+    display: flex;
   }
 
   .hero-stats {

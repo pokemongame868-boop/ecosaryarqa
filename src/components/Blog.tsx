@@ -1,20 +1,21 @@
-import { Clock, ArrowRight } from 'lucide-react';
-import { blogPosts } from '../data/tourismData';
+import { ArrowRight, Clock } from 'lucide-react';
+import { useI18n } from '../i18n';
 
 export default function Blog() {
+  const { content } = useI18n();
+  const { blog } = content;
+
   return (
     <section id="blog" className="blog">
       <div className="container">
         <header className="section-header">
-          <span className="section-tag">Мақалалар</span>
-          <h2 className="section-title">Пайдалы кеңестер</h2>
-          <p className="section-subtitle">
-            Саяхатқа дайындық, қауіпсіздік және жауапты туризм туралы оқыңыз.
-          </p>
+          <span className="section-tag">{blog.tag}</span>
+          <h2 className="section-title">{blog.title}</h2>
+          <p className="section-subtitle">{blog.subtitle}</p>
         </header>
 
         <div className="blog-grid">
-          {blogPosts.map((post) => (
+          {blog.items.map((post) => (
             <article key={post.id} className="blog-card">
               <div className="blog-card-top">
                 <span className="blog-card-category">{post.category}</span>
@@ -25,10 +26,10 @@ export default function Blog() {
               <div className="blog-card-bottom">
                 <span className="blog-card-read-time">
                   <Clock size={14} />
-                  {post.readTime} оқу
+                  {post.readTime} {blog.readSuffix}
                 </span>
                 <a href="#" className="blog-card-link" onClick={(e) => e.preventDefault()}>
-                  Оқу
+                  {blog.read}
                   <ArrowRight size={14} />
                 </a>
               </div>

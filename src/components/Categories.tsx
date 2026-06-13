@@ -1,8 +1,7 @@
-import { Mountain, Compass, Car, Tent, Landmark } from 'lucide-react';
-import { categories } from '../data/tourismData';
+import { Car, Compass, Landmark, Mountain, Tent } from 'lucide-react';
 import type { Category } from '../data/tourismData';
+import { useI18n } from '../i18n';
 
-// Map icon string to Lucide component
 function CategoryIcon({ icon }: { icon: string }) {
   const props = { size: 24 };
   switch (icon) {
@@ -35,19 +34,20 @@ function CategoryCard({ category }: { category: Category }) {
 }
 
 export default function Categories() {
+  const { content } = useI18n();
+  const { categories } = content;
+
   return (
     <section id="categories" className="categories">
       <div className="container">
         <header className="section-header">
-          <span className="section-tag">Туризм түрлері</span>
-          <h2 className="section-title">Қандай саяхат сізге ұнайды?</h2>
-          <p className="section-subtitle">
-            Жаяу походтан бастап атпен дала сапарына дейін — табиғатпен тілдесудің сан алуан жолдары.
-          </p>
+          <span className="section-tag">{categories.tag}</span>
+          <h2 className="section-title">{categories.title}</h2>
+          <p className="section-subtitle">{categories.subtitle}</p>
         </header>
 
         <div className="categories-grid">
-          {categories.map((cat) => (
+          {categories.items.map((cat) => (
             <CategoryCard key={cat.id} category={cat} />
           ))}
         </div>

@@ -1,18 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowRight, MapPin } from 'lucide-react';
 import { heroImages } from '../data/tourismData';
-
-const heroStats = [
-  { value: '5+', label: 'Бағыт' },
-  { value: '4', label: 'Маршрут' },
-  { value: '100%', label: 'Жауапты туризм' },
-];
+import { useI18n } from '../i18n';
 
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [imgErrors, setImgErrors] = useState<Record<number, boolean>>({});
+  const { content } = useI18n();
+  const { hero } = content;
 
-  // Auto-advance slides
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length);
@@ -34,11 +30,10 @@ export default function Hero() {
 
   return (
     <section id="home" className="hero">
-      {/* Background images */}
       <div className="hero-bg">
         {heroImages.map((src, i) => (
           <div
-            key={i}
+            key={src}
             style={{
               position: 'absolute',
               inset: 0,
@@ -60,7 +55,7 @@ export default function Hero() {
             ) : (
               <img
                 src={src}
-                alt={`Қарағанды облысының табиғаты ${i + 1}`}
+                alt={`${hero.imageAlt} ${i + 1}`}
                 onError={() => handleImgError(i)}
               />
             )}
@@ -68,37 +63,29 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* Overlay */}
       <div className="hero-overlay" />
 
-      {/* Content */}
       <div className="hero-content">
         <div className="hero-tag">
           <MapPin size={13} />
-          Қарағанды облысы, Қазақстан
+          {hero.tag}
         </div>
 
-        <h1 className="hero-title">
-          Қарағанды облысының табиғатын бірге ашайық
-        </h1>
-
-        <p className="hero-subtitle">
-          Қарағанды облысының ерекше табиғатын, киелі жерлерін және ұлттық туризм мәдениетін бірге ашыңыз. Жаяу походтар, атпен серуендер, кемпинг және road trip маршруттары сізді күтеді.
-        </p>
+        <h1 className="hero-title">{hero.title}</h1>
+        <p className="hero-subtitle">{hero.subtitle}</p>
 
         <div className="hero-buttons">
           <button className="hero-btn-primary" onClick={scrollToRoutes}>
-            Маршруттарды қарау
+            {hero.routesButton}
             <ArrowRight size={18} />
           </button>
           <button className="hero-btn-secondary" onClick={scrollToContact}>
-            Тур брондау
+            {hero.bookButton}
           </button>
         </div>
 
-        {/* Stats */}
         <div className="hero-stats">
-          {heroStats.map((stat) => (
+          {hero.stats.map((stat) => (
             <div key={stat.label} className="hero-stat">
               <span className="hero-stat-value">{stat.value}</span>
               <span className="hero-stat-label">{stat.label}</span>
@@ -107,14 +94,13 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Slide indicators */}
       <div className="hero-indicators">
-        {heroImages.map((_, i) => (
+        {heroImages.map((src, i) => (
           <button
-            key={i}
+            key={src}
             className={`hero-indicator${currentSlide === i ? ' active' : ''}`}
             onClick={() => setCurrentSlide(i)}
-            aria-label={`Слайд ${i + 1}`}
+            aria-label={`${hero.slideLabel} ${i + 1}`}
           />
         ))}
       </div>

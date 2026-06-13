@@ -1,6 +1,7 @@
-import { useEffect, useCallback } from 'react';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useCallback, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import type { GalleryItem } from '../data/tourismData';
+import { useI18n } from '../i18n';
 
 interface Props {
   items: GalleryItem[];
@@ -12,6 +13,8 @@ interface Props {
 export default function Lightbox({ items, index, onClose, onNav }: Props) {
   const total = items.length;
   const isOpen = index !== null;
+  const { content } = useI18n();
+  const { gallery } = content;
 
   const goPrev = useCallback(() => {
     if (index === null) return;
@@ -56,28 +59,24 @@ export default function Lightbox({ items, index, onClose, onNav }: Props) {
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"
-      aria-label="Галерея суреті"
+      aria-label={gallery.dialogLabel}
     >
-      {/* Close */}
-      <button className="lightbox-close" onClick={onClose} aria-label="Жабу">
+      <button className="lightbox-close" onClick={onClose} aria-label={gallery.close}>
         <X size={22} />
       </button>
 
-      {/* Counter */}
       <div className="lightbox-counter" aria-live="polite">
         {index + 1} / {total}
       </div>
 
-      {/* Prev arrow */}
       <button
         className="lightbox-arrow lightbox-arrow--prev"
         onClick={(e) => { e.stopPropagation(); goPrev(); }}
-        aria-label="Алдыңғы сурет"
+        aria-label={gallery.prev}
       >
         <ChevronLeft size={28} />
       </button>
 
-      {/* Image area */}
       <div className="lightbox-img-wrap" onClick={(e) => e.stopPropagation()}>
         {item.imageUrl ? (
           <img
@@ -97,11 +96,10 @@ export default function Lightbox({ items, index, onClose, onNav }: Props) {
         <p className="lightbox-caption">{item.caption}</p>
       </div>
 
-      {/* Next arrow */}
       <button
         className="lightbox-arrow lightbox-arrow--next"
         onClick={(e) => { e.stopPropagation(); goNext(); }}
-        aria-label="Келесі сурет"
+        aria-label={gallery.next}
       >
         <ChevronRight size={28} />
       </button>

@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { ArrowRight, Calendar, Activity, Clock } from 'lucide-react';
-import { destinations } from '../data/tourismData';
-import type { Destination } from '../data/tourismData';
+import { Activity, ArrowRight, Calendar, Clock } from 'lucide-react';
+import type { Destination, SiteCopy } from '../data/tourismData';
+import { useI18n } from '../i18n';
 import DestinationModal from './DestinationModal';
 
 function DestinationCard({
   dest,
+  labels,
   onDetails,
 }: {
   dest: Destination;
+  labels: SiteCopy['destinations']['labels'];
   onDetails: (d: Destination) => void;
 }) {
   return (
@@ -35,25 +37,25 @@ function DestinationCard({
           <div className="destination-meta-item">
             <span className="destination-meta-label">
               <Activity size={11} style={{ display: 'inline', marginRight: 4 }} />
-              Тип
+              {labels.type}
             </span>
             <span className="destination-meta-value">{dest.type}</span>
           </div>
           <div className="destination-meta-item">
             <span className="destination-meta-label">
               <Calendar size={11} style={{ display: 'inline', marginRight: 4 }} />
-              Маусым
+              {labels.season}
             </span>
             <span className="destination-meta-value">{dest.bestSeason}</span>
           </div>
           <div className="destination-meta-item">
-            <span className="destination-meta-label">Қиындық</span>
+            <span className="destination-meta-label">{labels.difficulty}</span>
             <span className="destination-meta-value">{dest.difficulty}</span>
           </div>
           <div className="destination-meta-item">
             <span className="destination-meta-label">
               <Clock size={11} style={{ display: 'inline', marginRight: 4 }} />
-              Ұзақтығы
+              {labels.duration}
             </span>
             <span className="destination-meta-value">{dest.duration}</span>
           </div>
@@ -62,9 +64,9 @@ function DestinationCard({
         <button
           className="btn-outline"
           onClick={() => onDetails(dest)}
-          aria-label={dest.name + ' туралы толығырақ'}
+          aria-label={`${dest.name} ${labels.detailsAria}`}
         >
-          Толығырақ
+          {labels.details}
           <ArrowRight size={15} />
         </button>
       </div>
@@ -74,24 +76,25 @@ function DestinationCard({
 
 export default function Destinations() {
   const [activeDestination, setActiveDestination] = useState<Destination | null>(null);
+  const { content } = useI18n();
+  const { destinations } = content;
 
   return (
     <>
       <section id="destinations" className="destinations">
         <div className="container">
           <header className="section-header">
-            <span className="section-tag">Бағыттар</span>
-            <h2 className="section-title">Танымал бағыттар</h2>
-            <p className="section-subtitle">
-              Қарағанды облысының ең әсем табиғи орындары — тауларынан бастап ұлан байтақ далаларына дейін.
-            </p>
+            <span className="section-tag">{destinations.tag}</span>
+            <h2 className="section-title">{destinations.title}</h2>
+            <p className="section-subtitle">{destinations.subtitle}</p>
           </header>
 
           <div className="destinations-grid">
-            {destinations.map((dest) => (
+            {destinations.items.map((dest) => (
               <DestinationCard
                 key={dest.id}
                 dest={dest}
+                labels={destinations.labels}
                 onDetails={setActiveDestination}
               />
             ))}

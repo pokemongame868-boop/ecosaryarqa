@@ -9,10 +9,11 @@ import Gallery from './components/Gallery';
 import Blog from './components/Blog';
 import BookingForm from './components/BookingForm';
 import Footer from './components/Footer';
+import { I18nProvider } from './i18n';
 
 export default function App() {
   return (
-    <>
+    <I18nProvider>
       <Header />
       <main>
         <Hero />
@@ -25,6 +26,6 @@ export default function App() {
         <BookingForm />
       </main>
       <Footer />
-    </>
+    </I18nProvider>
   );
 }

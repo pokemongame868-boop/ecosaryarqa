@@ -1,6 +1,6 @@
-import { Trash2, Footprints, Bird, Flame, HeartHandshake, Droplets, Store } from 'lucide-react';
-import { ecoRules } from '../data/tourismData';
+import { Bird, Droplets, Flame, Footprints, HeartHandshake, Store, Trash2 } from 'lucide-react';
 import type { EcoRule } from '../data/tourismData';
+import { useI18n } from '../i18n';
 
 function EcoIcon({ icon }: { icon: string }) {
   const props = { size: 20 };
@@ -28,19 +28,20 @@ function EcoRuleCard({ rule }: { rule: EcoRule }) {
 }
 
 export default function EcoRules() {
+  const { content } = useI18n();
+  const { ecoRules } = content;
+
   return (
     <section id="eco-rules" className="eco-rules">
       <div className="container">
         <header className="section-header">
-          <span className="section-tag">Эко қағидалар</span>
-          <h2 className="section-title">Жауапты саяхат қағидалары</h2>
-          <p className="section-subtitle">
-            Табиғатты сақтай отырып саяхаттау — болашақ ұрпаққа аманат.
-          </p>
+          <span className="section-tag">{ecoRules.tag}</span>
+          <h2 className="section-title">{ecoRules.title}</h2>
+          <p className="section-subtitle">{ecoRules.subtitle}</p>
         </header>
 
         <div className="eco-rules-grid">
-          {ecoRules.map((rule) => (
+          {ecoRules.items.map((rule) => (
             <EcoRuleCard key={rule.id} rule={rule} />
           ))}
         </div>

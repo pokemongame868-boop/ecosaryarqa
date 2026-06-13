@@ -1,9 +1,12 @@
-import { Leaf, MessageCircle, Instagram, Send, MapPin } from 'lucide-react';
-import { navLinks, contactInfo } from '../data/tourismData';
+import { Instagram, Leaf, MapPin, MessageCircle, Send } from 'lucide-react';
+import { useI18n } from '../i18n';
 
 const currentYear = new Date().getFullYear();
 
 export default function Footer() {
+  const { content } = useI18n();
+  const { navLinks, contactInfo, footer } = content;
+
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
@@ -13,7 +16,6 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-inner">
         <div className="footer-grid">
-          {/* Brand column */}
           <div>
             <div className="footer-brand-logo">
               <div className="footer-logo-icon">
@@ -21,11 +23,8 @@ export default function Footer() {
               </div>
               <span className="footer-brand-name">EcoSaryArqa</span>
             </div>
-            <p className="footer-slogan">
-              Табиғатты сақтай отырып саяхаттаңыз.
-            </p>
+            <p className="footer-slogan">{footer.slogan}</p>
 
-            {/* Social links */}
             <div className="footer-socials">
               <a
                 href="#"
@@ -54,9 +53,8 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Navigation */}
           <div>
-            <p className="footer-col-title">Навигация</p>
+            <p className="footer-col-title">{footer.navigation}</p>
             <ul className="footer-nav-list">
               {navLinks.map((link) => (
                 <li key={link.href}>
@@ -72,9 +70,8 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Baylanis */}
           <div>
-            <p className="footer-col-title">Байланыс</p>
+            <p className="footer-col-title">{footer.contacts}</p>
             <div>
               <div className="footer-contact-item">
                 <MessageCircle size={15} />
@@ -95,27 +92,29 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Eco info */}
           <div>
-            <p className="footer-col-title">Эко туризм</p>
+            <p className="footer-col-title">{footer.ecoTourism}</p>
             <ul className="footer-nav-list">
-              <li><a href="#eco-rules" className="footer-nav-link" onClick={(e) => handleNavClick(e, '#eco-rules')}>Эко қағидалар</a></li>
-              <li><a href="#destinations" className="footer-nav-link" onClick={(e) => handleNavClick(e, '#destinations')}>Бағыттар</a></li>
-              <li><a href="#routes" className="footer-nav-link" onClick={(e) => handleNavClick(e, '#routes')}>Маршруттар</a></li>
-              <li><a href="#gallery" className="footer-nav-link" onClick={(e) => handleNavClick(e, '#gallery')}>Галерея</a></li>
-              <li><a href="#blog" className="footer-nav-link" onClick={(e) => handleNavClick(e, '#blog')}>Мақалалар</a></li>
+              {footer.ecoLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className="footer-nav-link"
+                    onClick={(e) => handleNavClick(e, link.href)}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
-        {/* Bottom bar */}
         <div className="footer-bottom">
           <p className="footer-copyright">
-            &copy; {currentYear} EcoSaryArqa. Барлық құқықтар қорғалған.
+            &copy; {currentYear} EcoSaryArqa. {footer.copyright}
           </p>
-          <p className="footer-note">
-            Қарағанды облысы, Қазақстан
-          </p>
+          <p className="footer-note">{footer.note}</p>
         </div>
       </div>
     </footer>

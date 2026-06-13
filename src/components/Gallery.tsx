@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { galleryItems } from '../data/tourismData';
+import { useI18n } from '../i18n';
 import Lightbox from './Lightbox';
 
 export default function Gallery() {
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const { content } = useI18n();
+  const { gallery } = content;
 
   const handleImgError = (id: string) => {
     setImgErrors((prev) => ({ ...prev, [id]: true }));
@@ -15,20 +17,18 @@ export default function Gallery() {
       <section id="gallery" className="gallery">
         <div className="container">
           <header className="section-header">
-            <span className="section-tag">Галерея</span>
-            <h2 className="section-title">Табиғат суреттері</h2>
-            <p className="section-subtitle">
-              Қарағанды облысының ерекше табиғи көрінісі — дала, тау, көл және киелі жерлер.
-            </p>
+            <span className="section-tag">{gallery.tag}</span>
+            <h2 className="section-title">{gallery.title}</h2>
+            <p className="section-subtitle">{gallery.subtitle}</p>
           </header>
 
           <div className="gallery-grid">
-            {galleryItems.map((item, i) => (
+            {gallery.items.map((item, i) => (
               <button
                 key={item.id}
                 type="button"
                 className={`gallery-item ${item.span ?? 'normal'}`}
-                aria-label={item.caption + ' — үлкейту үшін басыңыз'}
+                aria-label={`${item.caption} - ${gallery.zoomAria}`}
                 onClick={() => setLightboxIndex(i)}
               >
                 {item.imageUrl && !imgErrors[item.id] ? (
@@ -47,7 +47,6 @@ export default function Gallery() {
                 )}
                 <div className="gallery-item-overlay">{item.caption}</div>
 
-                {/* Zoom hint icon */}
                 <div className="gallery-zoom-hint" aria-hidden="true">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -64,7 +63,7 @@ export default function Gallery() {
       </section>
 
       <Lightbox
-        items={galleryItems}
+        items={gallery.items}
         index={lightboxIndex}
         onClose={() => setLightboxIndex(null)}
         onNav={setLightboxIndex}
